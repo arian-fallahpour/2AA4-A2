@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +10,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class Explorer implements IExplorerRaid {
+
+    Boolean scanned = false;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -27,8 +30,35 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
+        Double rand = Math.random();
+        System.out.println(rand);
         JSONObject decision = new JSONObject();
-        decision.put("action", "stop"); // we stop the exploration immediately
+        
+
+        if (this.scanned) {
+            decision.put("action", "fly"); // we stop the exploration immediately
+            this.scanned = false;
+        } else {
+            decision.put("action", "echo"); // we stop the exploration immediately
+            JSONObject parameters = new JSONObject();
+            parameters.put("direction", "E");
+            decision.put("parameters", parameters);
+
+            this.scanned = true;
+        }
+        // if (rand < .33) {
+        // } else if (rand > .67) {
+        //     decision.put("action", "heading"); // we stop the exploration immediately
+        //     JSONObject parameters = new JSONObject();
+        //     parameters.put("direction", "S");
+        //     decision.put("parameters", parameters);
+        // } else {
+        //     decision.put("action", "heading"); // we stop the exploration immediately
+        //     JSONObject parameters = new JSONObject();
+        //     parameters.put("direction", "E");
+        //     decision.put("parameters", parameters);
+
+        // }
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }
@@ -37,10 +67,13 @@ public class Explorer implements IExplorerRaid {
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
         logger.info("** Response received:\n"+response.toString(2));
+
         Integer cost = response.getInt("cost");
         logger.info("The cost of the action was {}", cost);
+
         String status = response.getString("status");
         logger.info("The status of the drone is {}", status);
+
         JSONObject extraInfo = response.getJSONObject("extras");
         logger.info("Additional information received: {}", extraInfo);
     }

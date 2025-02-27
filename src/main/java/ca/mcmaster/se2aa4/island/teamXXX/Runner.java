@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.team222;
+package ca.mcmaster.se2aa4.island.teamXXX;
 
 import static eu.ace_design.island.runner.Runner.run;
 
@@ -13,7 +13,7 @@ public class Runner {
                     .exploring(new File(filename))
                     .withSeed(42L)
                     .startingAt(1, 1, "EAST")
-                    .backBefore(7000)
+                    .backBefore(70000)
                     .withCrew(5)
                     .collecting(1000, "WOOD")
                     .storingInto("./outputs")
