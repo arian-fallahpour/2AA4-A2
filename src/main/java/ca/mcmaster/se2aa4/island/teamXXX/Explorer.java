@@ -34,7 +34,6 @@ public class Explorer implements IExplorerRaid {
         System.out.println(rand);
         JSONObject decision = new JSONObject();
         
-
         if (this.scanned) {
             decision.put("action", "fly"); // we stop the exploration immediately
             this.scanned = false;
@@ -46,6 +45,7 @@ public class Explorer implements IExplorerRaid {
 
             this.scanned = true;
         }
+
         // if (rand < .33) {
         // } else if (rand > .67) {
         //     decision.put("action", "heading"); // we stop the exploration immediately
