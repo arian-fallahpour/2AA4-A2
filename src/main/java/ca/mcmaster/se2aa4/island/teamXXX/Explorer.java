@@ -45,20 +45,7 @@ public class Explorer implements IExplorerRaid {
 
             this.scanned = true;
         }
-
-        // if (rand < .33) {
-        // } else if (rand > .67) {
-        //     decision.put("action", "heading"); // we stop the exploration immediately
-        //     JSONObject parameters = new JSONObject();
-        //     parameters.put("direction", "S");
-        //     decision.put("parameters", parameters);
-        // } else {
-        //     decision.put("action", "heading"); // we stop the exploration immediately
-        //     JSONObject parameters = new JSONObject();
-        //     parameters.put("direction", "E");
-        //     decision.put("parameters", parameters);
-
-        // }
+        
         logger.info("** Decision: {}",decision.toString());
         return decision.toString();
     }
