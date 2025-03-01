@@ -31,8 +31,8 @@ public class Response {
      * Returns extras JSON object (no leaky abstraction)
      */
     public JSONObject getExtrasObject() {
-        String extras = this.responseObject.getJSONObject("extras").toString();
-        return new JSONObject(extras);
+        JSONObject extrasObject = this.responseObject.getJSONObject("extras");
+        return new JSONObject(extrasObject.toString());
     }
 
     /*
