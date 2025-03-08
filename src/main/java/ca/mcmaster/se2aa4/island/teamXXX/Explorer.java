@@ -22,23 +22,21 @@ public class Explorer implements IExplorerRaid {
 
         logger.info("** Initialization info:\n {}",info.toString(2));
         String direction = info.getString("heading");
-        Integer batteryLevel = info.getInt("budget");
+        Integer battery = info.getInt("budget");
         
         logger.info("The drone is facing {}", direction);
-        logger.info("Battery level is {}", batteryLevel);
+        logger.info("Battery level is {}", battery);
     }
 
     @Override
     public String takeDecision() {
-        Double rand = Math.random();
-        System.out.println(rand);
         JSONObject decision = new JSONObject();
         
         if (this.scanned) {
-            decision.put("action", "fly"); // we stop the exploration immediately
+            decision.put("action", "fly"); 
             this.scanned = false;
         } else {
-            decision.put("action", "echo"); // we stop the exploration immediately
+            decision.put("action", "echo");
             JSONObject parameters = new JSONObject();
             parameters.put("direction", "E");
             decision.put("parameters", parameters);
