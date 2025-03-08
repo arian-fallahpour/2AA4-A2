@@ -2,18 +2,18 @@ package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
 import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.teamXXX.Enums.RadarValue;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.RadarType;
 
 public class EchoResponse extends Response {
     private Integer range;
-    private RadarValue reading;
+    private RadarType reading;
 
     public EchoResponse(JSONObject responseObject) {
         super(responseObject);
 
         JSONObject extrasObject = this.getExtrasObject();
         this.range = extrasObject.getInt("range");
-        this.reading = RadarValue.valueOf(extrasObject.getString("found"));
+        this.reading = RadarType.valueOf(extrasObject.getString("found"));
     }
 
     /*
@@ -26,7 +26,7 @@ public class EchoResponse extends Response {
     /*
      * Returns echo reading (no leaky abstraction)
      */
-    public RadarValue getReading() {
-        return RadarValue.valueOf(this.reading.toString());
+    public RadarType getReading() {
+        return RadarType.valueOf(this.reading.toString());
     }
 }

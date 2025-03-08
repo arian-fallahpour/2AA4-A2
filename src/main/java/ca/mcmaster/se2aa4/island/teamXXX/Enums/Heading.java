@@ -3,48 +3,32 @@ package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 public enum Heading {
     N, E, S, W; // North, East, South, West
 
-    public Heading right() {
-        Heading result;
+    public Heading turn(Orientation orientation) {
+        switch (orientation) {
+            case Orientation.LEFT: return this.left();
+            case Orientation.RIGHT: return this.left();
+            default:  return this;
+        }
+    }
 
+    public Heading right() {
         switch (this) {
-            case N:
-                result = E; 
-                break;
-            case E:
-                result = S; 
-                break;
-            case S:
-                result = W; 
-                break;
-            case W:
-                result = N; 
-                break;
+            case N: return E; 
+            case E: return S; 
+            case S: return W; 
+            case W: return N; 
             default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
         }
-
-        return result;
     }
 
     public Heading left() {
-        Heading result;
-
         switch (this) {
-            case N:
-                result = W; 
-                break;
-            case E:
-                result = N; 
-                break;
-            case S:
-                result = E; 
-                break;
-            case W:
-                result = S; 
-                break;
-            default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
+            case N: return W; 
+            case E: return N; 
+            case S: return E; 
+            case W: return S; 
+            default:  throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
         }
-
-        return result;
     }
 
     public Heading reverse() {
