@@ -1,5 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 
+import ca.mcmaster.se2aa4.island.teamXXX.Vector;
+
 public enum Heading {
     N, E, S, W; // North, East, South, West
 
@@ -33,5 +35,16 @@ public enum Heading {
 
     public Heading reverse() {
         return this.right().right();
+    }
+
+
+    public Vector toVector() {
+        switch (this) {
+            case N: return new Vector(0, 1);
+            case E: return new Vector(1, 0);
+            case S: return new Vector(0, -1);
+            case W: return new Vector(-1, 0);
+            default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
+        }
     }
 }

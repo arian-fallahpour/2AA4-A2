@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,9 +9,9 @@ import org.json.JSONObject;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
 
 public class ScanResponse extends Response {
-    private ArrayList<Biome> biomes = new ArrayList<Biome>();
-    private ArrayList<String> creeks = new ArrayList<String>();
-    private ArrayList<String> sites = new ArrayList<String>();
+    private List<Biome> biomes = new ArrayList<Biome>();
+    private List<String> creeks = new ArrayList<String>();
+    private List<String> sites = new ArrayList<String>();
 
     public ScanResponse(JSONObject responseObject) {
         super(responseObject);
