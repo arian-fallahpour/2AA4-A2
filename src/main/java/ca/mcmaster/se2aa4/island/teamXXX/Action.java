@@ -22,12 +22,11 @@ public class Action {
     /*
      * Converts action to a string so that it can be used as a request
      */
-    @Override
     public String toString() {
-        JSONObject action = new JSONObject();
-        action.put("action", this.type.toString());
-        action.put("parameters", parameters);
-        return action.toString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action", this.type.toString().toLowerCase());
+        jsonObject.put("parameters", parameters);
+        return jsonObject.toString();
     }
     
 }

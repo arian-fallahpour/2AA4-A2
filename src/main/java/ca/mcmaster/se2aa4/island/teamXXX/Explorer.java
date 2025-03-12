@@ -9,9 +9,18 @@ import eu.ace_design.island.bot.IExplorerRaid;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class Explorer implements IExplorerRaid {
+import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.ActionType;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
+import ca.mcmaster.se2aa4.island.teamXXX.Action;
 
-    Boolean scanned = false;
+public class Explorer implements IExplorerRaid {
+    Boolean scanned;
+    Integer turns = 0;
+    Boolean shouldTurnLeft = false;
+    Drone drone;
+    Integer count = 0;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -21,46 +30,72 @@ public class Explorer implements IExplorerRaid {
         JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
 
         logger.info("** Initialization info:\n {}",info.toString(2));
-        String direction = info.getString("heading");
         Integer battery = info.getInt("budget");
+        Heading direction = Heading.valueOf(info.getString("heading"));
+
+        this.drone = new Drone(battery, direction);
+        this.scanned = false;
         
-        logger.info("The drone is facing {}", direction);
-        logger.info("Battery level is {}", battery);
+        logger.info("The drone is facing: " + drone.getDirection().toString());
+        logger.info("The drone's Battery level is: " + drone.getBattery().getCharge());
     }
 
     @Override
     public String takeDecision() {
-        JSONObject decision = new JSONObject();
-        
-        if (this.scanned) {
-            decision.put("action", "fly"); 
-            this.scanned = false;
-        } else {
-            decision.put("action", "echo");
-            JSONObject parameters = new JSONObject();
-            parameters.put("direction", "E");
-            decision.put("parameters", parameters);
+        Action action;
 
-            this.scanned = true;
+        Integer rightBorderX = 50;
+        Integer bottomBorderY = 53;
+
+        Vector position = this.drone.getPosition();
+        Heading heading = this.drone.getHeading();
+
+        if (!this.scanned) {
+            if (position.y < bottomBorderY) {
+                if ((heading == Heading.E && position.x < rightBorderX) || (heading == Heading.W && position.x > 2)) {
+                    action = this.drone.fly();
+                } else {
+                    if (this.turns < 2) {
+                        if (!this.shouldTurnLeft) {
+                            action = this.drone.turn(Orientation.RIGHT);
+                        } else {
+                            action = this.drone.turn(Orientation.LEFT);
+                        }
+                        this.turns++;
+                    } else {
+                        action = this.drone.fly();
+                        this.turns = 0;
+                        this.shouldTurnLeft = !this.shouldTurnLeft;
+                    }
+                }
+            } else {
+                action = this.drone.stop();
+            }
+        } else {
+            action = this.drone.scan();
         }
-        
-        logger.info("** Decision: {}",decision.toString());
-        return decision.toString();
+        this.scanned = !this.scanned;
+
+        // Return value formatting
+        String decision = action.toString();
+        logger.info("Decision: " + decision);
+        return decision;
     }
 
     @Override
     public void acknowledgeResults(String s) {
         JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-        logger.info("** Response received:\n"+response.toString(2));
+        logger.info("Drone coords: [" + this.drone.getPosition().x + ", " + this.drone.getPosition().y + "]");
+        // logger.info("** Response received:\n"+response.toString(2));
 
-        Integer cost = response.getInt("cost");
-        logger.info("The cost of the action was {}", cost);
+        // Integer cost = response.getInt("cost");
+        // logger.info("The cost of the action was {}", cost);
 
-        String status = response.getString("status");
-        logger.info("The status of the drone is {}", status);
+        // String status = response.getString("status");
+        // logger.info("The status of the drone is {}", status);
 
-        JSONObject extraInfo = response.getJSONObject("extras");
-        logger.info("Additional information received: {}", extraInfo);
+        // JSONObject extraInfo = response.getJSONObject("extras");
+        // logger.info("Additional information received: {}", extraInfo);
     }
 
     @Override

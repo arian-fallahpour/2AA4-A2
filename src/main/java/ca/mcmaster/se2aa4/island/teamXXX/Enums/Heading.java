@@ -29,7 +29,7 @@ public enum Heading {
             case E: return N; 
             case S: return E; 
             case W: return S; 
-            default:  throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
+            default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
         }
     }
 
@@ -40,9 +40,9 @@ public enum Heading {
 
     public Vector toVector() {
         switch (this) {
-            case N: return new Vector(0, 1);
+            case N: return new Vector(0, -1);
             case E: return new Vector(1, 0);
-            case S: return new Vector(0, -1);
+            case S: return new Vector(0, 1);
             case W: return new Vector(-1, 0);
             default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
         }

@@ -37,6 +37,7 @@ public class Drone {
             throw new IllegalArgumentException("Orientation can only be LEFT or RIGHT");
         }
 
+        // Follow turn trajectory
         this.move();
         this.direction = orientation.oriente(this.direction);
         this.move();
@@ -73,8 +74,18 @@ public class Drone {
     }
     
     // Gets the drone's current direction as heading
-    public Heading getDirection() {
+    public Heading getHeading() {
         return Heading.valueOf(this.direction.toString());
+    }
+    
+    
+    // Gets the drone's current direction as vector
+    public Vector getDirection() {
+        return this.direction.toVector();
+    }
+
+    public Battery getBattery() {
+        return new Battery(this.battery.getCharge());
     }
     
     //get a string representation of the drone's current state
