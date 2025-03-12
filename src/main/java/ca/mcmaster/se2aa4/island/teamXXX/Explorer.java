@@ -50,6 +50,9 @@ public class Explorer implements IExplorerRaid {
         Vector position = this.drone.getPosition();
         Heading heading = this.drone.getHeading();
 
+
+        // Moves in a zig-zag pattern
+        // RUN Runner.main, then take a look at outputs/Explorer.svg
         if (!this.scanned) {
             if (position.y < bottomBorderY) {
                 if ((heading == Heading.E && position.x < rightBorderX) || (heading == Heading.W && position.x > 2)) {
