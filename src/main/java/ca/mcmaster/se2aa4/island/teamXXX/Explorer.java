@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,9 +12,12 @@ import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.ActionType;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
-import ca.mcmaster.se2aa4.island.teamXXX.Action;
+import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
+import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
+import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
 
 public class Explorer implements IExplorerRaid {
     Boolean scanned;
@@ -21,6 +25,9 @@ public class Explorer implements IExplorerRaid {
     Boolean shouldTurnLeft = false;
     Drone drone;
     Integer count = 0;
+    ArrayList<Vector> creekCoords;
+
+    ActionType previousActionType;
 
     private final Logger logger = LogManager.getLogger();
 
@@ -49,7 +56,6 @@ public class Explorer implements IExplorerRaid {
 
         Vector position = this.drone.getPosition();
         Heading heading = this.drone.getHeading();
-
 
         // Moves in a zig-zag pattern
         // RUN Runner.main, then take a look at outputs/Explorer.svg
@@ -80,30 +86,38 @@ public class Explorer implements IExplorerRaid {
         this.scanned = !this.scanned;
 
         // Return value formatting
-        String decision = action.toString();
-        logger.info("Decision: " + decision);
-        return decision;
+        this.previousActionType = action.getType();
+        return action.toString();
     }
 
     @Override
     public void acknowledgeResults(String s) {
-        JSONObject response = new JSONObject(new JSONTokener(new StringReader(s)));
-        logger.info("Drone coords: [" + this.drone.getPosition().x + ", " + this.drone.getPosition().y + "]");
-        // logger.info("** Response received:\n"+response.toString(2));
+        JSONObject jsonResponse = new JSONObject(new JSONTokener(new StringReader(s)));
 
-        // Integer cost = response.getInt("cost");
-        // logger.info("The cost of the action was {}", cost);
-
-        // String status = response.getString("status");
-        // logger.info("The status of the drone is {}", status);
-
-        // JSONObject extraInfo = response.getJSONObject("extras");
-        // logger.info("Additional information received: {}", extraInfo);
+        try {
+            logger.info("The drone's coordinates are: " + this.drone.getPosition().toString());
+            if (this.previousActionType == ActionType.SCAN) {
+                ScanResponse response = new ScanResponse(jsonResponse);
+                ArrayList<String> creeks = response.getCreeks();
+                if (creeks.size() > 0) {
+                    logger.info("CREEKS: " + creeks.toString());
+                }
+                
+                // if (creeks.size() > 0) {   
+                //     logger.info("The cost of the action was {}", response.getCost());
+                //     logger.info("The status of the drone is {}", response.getStatus());
+                //     logger.info("The biomes scanned are {}", response.getBiomes().toString());
+                // }
+            } 
+        } catch(Exception e) {
+            System.err.println("EEE: " + e.getMessage());
+        }
     }
 
     @Override
     public String deliverFinalReport() {
-        return "no creek found";
+        logger.info(this.creekCoords.toString());
+        return this.creekCoords.toString();
     }
 
 }

@@ -12,6 +12,10 @@ public class Action {
         this.type = type;
     }
 
+    public ActionType getType() {
+        return ActionType.valueOf(this.type.toString());
+    }
+
     /*
      * Adds a parameter value for a key in the action's parameters
      */

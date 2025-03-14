@@ -35,7 +35,7 @@ public class ScanResponse extends Response {
      */
     private void setCreeks(JSONArray creeks) {
         for (int i = 0; i < creeks.length(); i++) {
-            this.creeks.add(creeks.getString(i));
+            this.creeks.add(creeks.get(i).toString());
         }
     }
 
@@ -44,7 +44,7 @@ public class ScanResponse extends Response {
      */
     private void setSites(JSONArray sites) {
         for (int i = 0; i < sites.length(); i++) {
-            this.sites.add(sites.getString(i));
+            this.sites.add(sites.get(i).toString());
         }
     }
 
