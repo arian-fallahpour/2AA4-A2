@@ -99,9 +99,10 @@ public class Explorer implements IExplorerRaid {
             if (this.previousActionType == ActionType.SCAN) {
                 ScanResponse response = new ScanResponse(jsonResponse);
                 ArrayList<String> creeks = response.getCreeks();
-                if (creeks.size() > 0) {
-                    logger.info("CREEKS: " + creeks.toString());
-                }
+                ArrayList<String> sites = response.getSites();
+                if (creeks.size() > 0) logger.info("CREEKS: " + creeks.toString());
+                if (sites.size() > 0) logger.info("CREEKS: " + sites.toString());
+                
                 
                 // if (creeks.size() > 0) {   
                 //     logger.info("The cost of the action was {}", response.getCost());

@@ -24,20 +24,20 @@
 
 ## Emergency site & Creeks
 
-  - Emergency site [e69b3569-63cf-46f3-ac8c-97301c6c46d1] located at (1092.68,434.53)
+  - Emergency site [5293b738-8840-4109-8179-b8970f5ed054] located at (1092.68,434.53)
 
 | Rank | Creek ID | Distance to site | x | y |
 |------|----------|------------------|---|---|
-| C01 | 282400a2-cd73-4f68-9f23-deeea64c313d | 231.78 | 922.01 | 277.71 |
-| C02 | ea481f34-0e30-4c1f-80eb-0d27d4965499 | 269.71 | 851.66 | 313.50 |
-| C03 | 25359127-0586-4434-ab38-3dffa387c289 | 462.47 | 1015.18 | 890.46 |
-| C04 | c6a1ef08-1690-4b2e-8cc5-80db79b471b2 | 615.83 | 553.60 | 732.24 |
-| C05 | 977cb6b6-68c3-4b97-b00e-c277ff7c8aca | 627.10 | 560.25 | 765.85 |
-| C06 | 1b5e5db1-99e9-4d03-9f3b-568281a10273 | 661.00 | 553.15 | 816.41 |
-| C07 | 419a7dfb-2a54-4350-8b13-cc8b9f2578ad | 715.02 | 906.90 | 1125.00 |
-| C08 | bc394ff5-38b2-4723-a208-b3ab8b5f1bdd | 807.79 | 844.28 | 1203.18 |
-| C09 | 01798c47-3fcd-4c2e-b68e-a37c6ad5ad16 | 879.68 | 504.07 | 1088.27 |
-| C10 | ea41f351-d0de-409c-a6ec-68a8a91231c8 | 967.57 | 725.73 | 1329.81 |
+| C01 | 94accff8-b4e8-49ce-a984-b140203e209b | 231.78 | 922.01 | 277.71 |
+| C02 | d949a982-4e37-4804-a59b-a55772738dd4 | 269.71 | 851.66 | 313.50 |
+| C03 | 76ebc197-723c-4f44-aebc-f8bb3dedd513 | 462.47 | 1015.18 | 890.46 |
+| C04 | 16469d78-ea0d-4f59-8e3a-e62242117064 | 615.83 | 553.60 | 732.24 |
+| C05 | 84cf9a6a-a9ca-497f-90fb-2495d6c31eb2 | 627.10 | 560.25 | 765.85 |
+| C06 | afd0e234-c886-40d7-880b-51893f074d70 | 661.00 | 553.15 | 816.41 |
+| C07 | f1352bf6-2d4f-4329-9d6d-222f2e094dfe | 715.02 | 906.90 | 1125.00 |
+| C08 | a37c5030-a22a-4ed3-a161-22b0d7887893 | 807.79 | 844.28 | 1203.18 |
+| C09 | f7b8d2ef-a1dc-4fb5-9f98-66c3f2187195 | 879.68 | 504.07 | 1088.27 |
+| C10 | 6b5db665-101e-455f-9a5a-5fe22e091b48 | 967.57 | 725.73 | 1329.81 |
 
 ```
 [INFO ] Island/Arena Processing player [Explorer] with island [Island]
@@ -5176,7 +5176,7 @@
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
 [INFO ] Explorer The drone's coordinates are: (18, 24)
-[INFO ] Explorer CREEKS: [c6a1ef08-1690-4b2e-8cc5-80db79b471b2]
+[INFO ] Explorer CREEKS: [16469d78-ea0d-4f59-8e3a-e62242117064]
 [INFO ] Island/Game [Engine] Asking for user's decision [explorer.takeDecision()]
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
@@ -7665,7 +7665,7 @@
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
 [INFO ] Explorer The drone's coordinates are: (17, 36)
-[INFO ] Explorer CREEKS: [01798c47-3fcd-4c2e-b68e-a37c6ad5ad16]
+[INFO ] Explorer CREEKS: [f7b8d2ef-a1dc-4fb5-9f98-66c3f2187195]
 [INFO ] Island/Game [Engine] Asking for user's decision [explorer.takeDecision()]
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
@@ -8586,7 +8586,7 @@
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
 [INFO ] Explorer The drone's coordinates are: (28, 40)
-[INFO ] Explorer CREEKS: [bc394ff5-38b2-4723-a208-b3ab8b5f1bdd]
+[INFO ] Explorer CREEKS: [a37c5030-a22a-4ed3-a161-22b0d7887893]
 [INFO ] Island/Game [Engine] Asking for user's decision [explorer.takeDecision()]
 [INFO ] Island/Game [Engine] Applying user's decision to the board
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
@@ -11280,7 +11280,7 @@
 [INFO ] Island/Game [Engine] Acknowledging results [explorer.acknowledgeResults(...)]
 [INFO ] Explorer The drone's coordinates are: (52, 53)
 [INFO ] Island/Game [Engine] Game is over
-[INFO ] Island/Arena  --> Execution time: 1404ms
+[INFO ] Island/Arena  --> Execution time: 2290ms
 [INFO ] Island/Viewer [FogOfWarViewer] Building an SVG document
 [INFO ] Island/Viewer [PoiJSONViewer] Building POI JSON File
 ```
