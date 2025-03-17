@@ -8,7 +8,7 @@ public enum Heading {
     public Heading turn(Orientation orientation) {
         switch (orientation) {
             case Orientation.LEFT: return this.left();
-            case Orientation.RIGHT: return this.left();
+            case Orientation.RIGHT: return this.right();
             default:  return this;
         }
     }
@@ -33,10 +33,15 @@ public enum Heading {
         }
     }
 
-    public Heading reverse() {
-        return this.right().right();
+    public Heading opposite() {
+        switch (this) {
+            case N: return S;
+            case E: return W;
+            case S: return N;
+            case W: return E;
+            default: throw new IllegalArgumentException(String.format("Unexpected heading value: %s", this));
+        }
     }
-
 
     public Vector toVector() {
         switch (this) {
