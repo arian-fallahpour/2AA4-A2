@@ -3,7 +3,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
 public enum Heading {
-    N, E, S, W; // North, East, South, West
+    N, E, S, W, Z; // North, East, South, West, Zero (null)
 
     public Heading turn(Orientation orientation) {
         switch (orientation) {

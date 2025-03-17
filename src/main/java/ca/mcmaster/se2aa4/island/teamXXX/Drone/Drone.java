@@ -1,23 +1,23 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
-import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.ActionType;
+import ca.mcmaster.se2aa4.island.teamXXX.Enums.DroneOps;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
+import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
 //drone class that handles all drone movement and sensing operations
 public class Drone {
     private Heading direction; // Direction as a Heading
     private Vector position; // Position as a Vector
     private Battery battery;
-    private Radar radar;
+    private DroneOps state = DroneOps.LOOKING;
 
     public Drone(Integer battery, Heading direction) {
         this.direction = direction;
         this.position = new Vector(0, 0);
         this.battery = new Battery(battery);
-        this.radar = new Radar();
     }
 
     // Update coordinates based on the current direction when moving
@@ -67,6 +67,11 @@ public class Drone {
     public Action stop() {
         return new Action(ActionType.STOP);
     }
+
+    public DroneOps getState() {
+        return this.state;
+    }
+ 
     
     // Get the drone's current coordinates
     public Vector getPosition() {
