@@ -6,7 +6,9 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
-//drone class that handles all drone movement and sensing operations
+/*
+ * 
+ */
 public class Drone {
     private Heading direction; // Direction as a Heading
     private Vector position; // Position as a Vector
