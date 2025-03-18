@@ -1,40 +1,49 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
+import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.ActionType;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
-import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
 //drone class that handles all drone movement and sensing operations
 public class Drone {
     private Heading direction; // Direction as a Heading
     private Vector position; // Position as a Vector
     private Battery battery;
-    private ActionType state = ActionType.FLY;
+    private Radar radar;
 
     public Drone(Integer battery, Heading direction) {
         this.direction = direction;
         this.position = new Vector(0, 0);
         this.battery = new Battery(battery);
+        this.radar = new Radar();
     }
 
-    // Creates a fly action to move the drone forward
+    // Update coordinates based on the current direction when moving
+    private void move() {
+        this.position = this.position.add(this.direction.toVector());
+    }
+
+    // Creates a fly action to move the drone forward and updates position
     public Action fly() {
-        // Don't update position here - the game engine will do this
+        this.move();
         return new Action(ActionType.FLY);
     }
 
-    // Creates a turn action to change direction
+    // Creates a turn action and updates position SAFELY
     public Action turn(Orientation orientation) {
         if (orientation.equals(Orientation.FORWARD)) {
             throw new IllegalArgumentException("Orientation can only be LEFT or RIGHT");
         }
 
-        // Don't update position/direction here - the game engine will do this
+        // Follow turn trajectory
+        this.move();
+        this.direction = orientation.oriente(this.direction);
+        this.move();
+
         Action action = new Action(ActionType.HEADING);
-        Heading newDirection = orientation.oriente(this.direction);
-        action.setParameter("direction", newDirection);
+        action.setParameter("direction", this.direction);
         
         return action;
     }
@@ -58,7 +67,6 @@ public class Drone {
     public Action stop() {
         return new Action(ActionType.STOP);
     }
- 
     
     // Get the drone's current coordinates
     public Vector getPosition() {
@@ -78,16 +86,6 @@ public class Drone {
 
     public Battery getBattery() {
         return new Battery(this.battery.getCharge());
-    }
-    
-    // Set the drone's position (to be called from Explorer when the engine updates)
-    public void setPosition(Vector newPosition) {
-        this.position = newPosition;
-    }
-    
-    // Set the drone's direction (to be called from Explorer when the engine updates)
-    public void setDirection(Heading newDirection) {
-        this.direction = newDirection;
     }
     
     //get a string representation of the drone's current state
