@@ -105,6 +105,7 @@ public class IslandFinder {
                 break;
                 
             case ARRIVED:
+                System.out.println("ARRIVIED");
                 // We've reached the island, now we can scan it
                 nextActionObj = new Action(ActionType.SCAN);
                 currentState = State.COMPLETED;
