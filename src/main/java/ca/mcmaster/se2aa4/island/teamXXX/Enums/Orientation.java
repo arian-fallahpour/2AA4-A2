@@ -10,6 +10,5 @@ public enum Orientation {
             case FORWARD: return heading;
             default: throw new IllegalArgumentException(String.format("Incorrect orientation %s", this));
         }
-
     }
 }

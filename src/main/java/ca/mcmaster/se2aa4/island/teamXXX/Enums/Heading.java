@@ -37,7 +37,6 @@ public enum Heading {
         return this.right().right();
     }
 
-
     public Vector toVector() {
         switch (this) {
             case N: return new Vector(0, -1);
