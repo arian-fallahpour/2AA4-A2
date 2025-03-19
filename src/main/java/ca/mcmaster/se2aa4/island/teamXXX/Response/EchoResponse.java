@@ -1,32 +1,39 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import ca.mcmaster.se2aa4.island.teamXXX.Enums.RadarType;
+public class EchoResponse implements Response {
+    private final Logger logger = LogManager.getLogger();
 
-public class EchoResponse extends Response {
+    public enum Found { OUT_OF_RANGE, GROUND };
+
+    private Integer cost;
+    private Response.Status status;
+    private JSONObject extras;
+
+    private Found found;
     private Integer range;
-    private RadarType reading;
 
-    public EchoResponse(JSONObject responseObject) {
-        super(responseObject);
-
-        JSONObject extrasObject = this.getExtrasObject();
-        this.range = extrasObject.getInt("range");
-        this.reading = RadarType.valueOf(extrasObject.getString("found"));
+    public EchoResponse(JSONObject jsonResponse) {
+        this.cost = jsonResponse.getInt("cost");
+        this.status = Response.Status.valueOf(jsonResponse.getString("status"));
+        this.extras = jsonResponse.getJSONObject("extras");
+        
+        this.found = Found.valueOf(this.extras.getString("found"));
+        this.range = this.extras.getInt("range");
     }
 
-    /*
-     * Returns echo range (no leaky abstraction)
-     */
-    public Integer getRange() {
-        return Integer.valueOf(this.range);
-    }
+    @Override
+    public Integer getCost() { return this.cost; }
+    
+    @Override
+    public Response.Status getStatus() { return this.status; }
+    
+    @Override
+    public JSONObject getExtras() { return this.extras; }
 
-    /*
-     * Returns echo reading (no leaky abstraction)
-     */
-    public RadarType getReading() {
-        return RadarType.valueOf(this.reading.toString());
-    }
+    public Found getFound() { return this.found; }
+    public Integer getRange() { return this.range; }
 }
