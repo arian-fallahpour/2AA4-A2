@@ -1,11 +1,10 @@
-package ca.mcmaster.se2aa4.island.teamXXX.State.States;
+package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
-import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class SharpTurnState implements State {
     public enum Stage { ENTER, TURN, EXIT };
@@ -86,31 +85,37 @@ public class SharpTurnState implements State {
     @Override 
     public State respond(Response response) {
         switch (this.stage) {
-            case ENTER:
-                this.drone.fly(response.getCost());
-
-                return new SharpTurnState.Builder(drone)
-                    .withOrientation(this.orientation)
-                    .withExitState(this.exitState)
-                    .withStage(Stage.TURN)
-                    .withTurns(this.turns)
-                    .build();
-            
-            case TURN:
-                this.drone.turn(response.getCost(), this.getTurnOrientation());
-                return new SharpTurnState.Builder(drone)
-                    .withOrientation(this.orientation)
-                    .withExitState(this.exitState)
-                    .withStage(this.turns < this.maxTurnsBeforeExit ? Stage.TURN : Stage.EXIT)
-                    .withTurns(this.turns + 1)
-                    .build();
-            
-            case EXIT:
-                this.drone.fly(response.getCost());
-                return this.exitState;
-
+            case ENTER: return this.respondEnter(response);
+            case TURN: return this.respondTurn(response);
+            case EXIT: return this.respondExit(response);
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    private State respondEnter(Response response) {
+        this.drone.fly(response.getCost());
+
+        return new SharpTurnState.Builder(drone)
+            .withOrientation(this.orientation)
+            .withExitState(this.exitState)
+            .withStage(Stage.TURN)
+            .withTurns(this.turns)
+            .build();
+    }
+    
+    private State respondTurn(Response response) {
+        this.drone.turn(response.getCost(), this.getTurnOrientation());
+        return new SharpTurnState.Builder(drone)
+            .withOrientation(this.orientation)
+            .withExitState(this.exitState)
+            .withStage(this.turns < this.maxTurnsBeforeExit ? Stage.TURN : Stage.EXIT)
+            .withTurns(this.turns + 1)
+            .build();
+    }
+
+    private State respondExit(Response response) {
+        this.drone.fly(response.getCost());
+        return this.exitState;
     }
 
     /* Find opposite turn heading */

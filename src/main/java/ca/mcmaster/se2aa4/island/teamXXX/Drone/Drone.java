@@ -19,9 +19,9 @@ public class Drone {
 
     private final Integer step = 1;
 
-    public Drone(Integer charge, Heading heading) {
+    public Drone(Integer charge, Vector position, Heading heading) {
         this.heading = heading;
-        this.position = new Vector(1, 1);
+        this.position = position;
         this.battery = new Battery(charge);
     }
 

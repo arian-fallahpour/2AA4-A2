@@ -1,10 +1,9 @@
-package ca.mcmaster.se2aa4.island.teamXXX.State.States;
+package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
-import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class CalibrationState implements State {
     public enum Stage { GET_ROWS, GET_COLS };
@@ -74,23 +73,27 @@ public class CalibrationState implements State {
     @Override
     public State respond(Response response) {
         switch (this.stage) {
-            case GET_ROWS: 
-                this.drone.echo(response.getCost(), colsOrientation);
-                return new CalibrationState.Builder(this.drone)
-                    .withStage(Stage.GET_COLS)
-                    .withMaxRows(response.getExtras().getInt("range"))
-                    .build();
-
-            case GET_COLS: 
-                this.maxCols = response.getExtras().getInt("range");
-
-                this.drone.echo(response.getCost(), colsOrientation);
-                this.drone.calibrate(this.maxRows, this.maxCols);
-                
-                return new EdgeFinderState(this.drone);
-                    
+            case GET_ROWS: return this.respondGetRows(response);
+            case GET_COLS: return this.respondGetCols(response);
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    private State respondGetRows(Response response) {
+        this.drone.echo(response.getCost(), colsOrientation);
+        return new CalibrationState.Builder(this.drone)
+            .withStage(Stage.GET_COLS)
+            .withMaxRows(response.getExtras().getInt("range"))
+            .build();
+    }
+
+    private State respondGetCols(Response response) {
+        this.maxCols = response.getExtras().getInt("range");
+
+        this.drone.echo(response.getCost(), colsOrientation);
+        this.drone.calibrate(this.maxRows, this.maxCols);
+        
+        return new EdgeFinderState(this.drone);
     }
 
     @Override 

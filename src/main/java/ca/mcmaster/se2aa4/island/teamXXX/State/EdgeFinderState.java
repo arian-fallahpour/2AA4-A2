@@ -1,4 +1,4 @@
-package ca.mcmaster.se2aa4.island.teamXXX.State.States;
+package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import org.json.JSONObject;
 
@@ -7,7 +7,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
-import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class EdgeFinderState implements State {
     public enum Stage { RIGHT_TURN, LEFT_TURN, ECHO, FLY };
@@ -40,33 +39,40 @@ public class EdgeFinderState implements State {
     @Override
     public State respond(Response response) {
         switch (this.stage) {
-            case RIGHT_TURN: 
-                this.drone.turn(response.getCost(), Orientation.RIGHT);
-                return new EdgeFinderState(this.drone, Stage.LEFT_TURN);
-            
-            case LEFT_TURN: 
-                this.drone.turn(response.getCost(), Orientation.LEFT);
-                return new EdgeFinderState(this.drone, Stage.ECHO);
-            
-            case ECHO: 
-                this.drone.echo(response.getCost(), this.echoOrientation);
-
-                EchoResponse echoResponse = (EchoResponse)response;
-                EchoResponse.Found found = echoResponse.getFound();
-
-                if (found == EchoResponse.Found.OUT_OF_RANGE) {
-                    return new EdgeFinderState(this.drone, Stage.FLY);
-                } else {
-                    State exitState = new EdgeArriverState(this.drone);
-                    return new SharpTurnState(this.drone, this.echoOrientation, exitState);
-                }
-            
-            case FLY: 
-                this.drone.fly(response.getCost());
-                return new EdgeFinderState(this.drone, Stage.ECHO);
-
+            case RIGHT_TURN: return this.respondRightTurn(response);
+            case LEFT_TURN: return this.respondLeftTurn(response);
+            case ECHO: return this.respondEcho(response);
+            case FLY: return this.respondFly(response);
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    private State respondRightTurn(Response response) {
+        this.drone.turn(response.getCost(), Orientation.RIGHT);
+        return new EdgeFinderState(this.drone, Stage.LEFT_TURN);
+    }
+
+    private State respondLeftTurn(Response response) {
+        this.drone.turn(response.getCost(), Orientation.LEFT);
+        return new EdgeFinderState(this.drone, Stage.ECHO);
+    }
+
+    private State respondEcho(Response response) {
+        this.drone.echo(response.getCost(), this.echoOrientation);
+
+        EchoResponse echoResponse = (EchoResponse)response;
+        EchoResponse.Found found = echoResponse.getFound();
+
+        if (found == EchoResponse.Found.OUT_OF_RANGE) {
+            return new EdgeFinderState(this.drone, Stage.FLY);
+        } else {
+            State exitState = new EdgeArriverState(this.drone);
+            return new SharpTurnState(this.drone, this.echoOrientation, exitState);
+        }
+    }
+    private State respondFly(Response response) {
+        this.drone.fly(response.getCost());
+        return new EdgeFinderState(this.drone, Stage.ECHO);
     }
 
     @Override 

@@ -9,8 +9,8 @@ import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
+import ca.mcmaster.se2aa4.island.teamXXX.State.CalibrationState;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
-import ca.mcmaster.se2aa4.island.teamXXX.State.States.CalibrationState;
 import eu.ace_design.island.bot.IExplorerRaid;
 
 public class Explorer implements IExplorerRaid {
@@ -21,14 +21,15 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public void initialize(String s) {
-        logger.info("** Initializing the Exploration Command Center");
         JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
+        logger.info(info.toString());
         
         // Create drone
-        Heading direction = Heading.valueOf(info.getString("heading"));
         Integer charge = info.getInt("budget");
-        this.drone = new Drone(charge, direction);
-
+        Heading heading = Heading.valueOf(info.getString("heading"));
+        Vector position = new Vector(1, 1);
+        this.drone = new Drone(charge, position, heading);
+        
         // Create decision maker
         State initialState = new CalibrationState(this.drone);
         this.decisionMaker = new DecisionMaker(drone, initialState);
@@ -45,7 +46,6 @@ public class Explorer implements IExplorerRaid {
     @Override
     public void acknowledgeResults(String s) {
         JSONObject jsonResponse = new JSONObject(new JSONTokener(new StringReader(s)));
-        
         
         logger.info("RESPONSE: " + jsonResponse);
         this.decisionMaker.acknowledge(jsonResponse);

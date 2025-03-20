@@ -1,0 +1,2 @@
+[INFO ] Island/Board [GameBoardBuilder] Starting GameBoard building process
+[INFO ] Island/Board [GameBoardBuilder] Binding faces to game tiles

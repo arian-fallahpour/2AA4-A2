@@ -1,11 +1,10 @@
-package ca.mcmaster.se2aa4.island.teamXXX.State.States;
+package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
-import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class EdgeArriverState implements State {
     public enum Stage { FLY, ECHO }
@@ -34,23 +33,27 @@ public class EdgeArriverState implements State {
     @Override 
     public State respond(Response response) {
         switch (this.stage) {
-            case FLY:
-                this.drone.fly(response.getCost());
-                return new EdgeArriverState(this.drone, Stage.ECHO);
-            
-            case ECHO:
-                this.drone.echo(response.getCost(), Orientation.FORWARD);
-
-                EchoResponse echoResponse = (EchoResponse)response;
-                Integer distance = echoResponse.getRange();
-
-                if (distance > 0) {
-                    return new EdgeArriverState(this.drone, Stage.FLY);
-                } else {
-                    return new StepScannerState(this.drone);
-                }
-
+            case FLY: return this.respondFly(response);
+            case ECHO: return this.respondEcho(response);
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
+        }
+    }
+
+    public State respondFly(Response response) {
+        this.drone.fly(response.getCost());
+        return new EdgeArriverState(this.drone, Stage.ECHO);
+    }
+
+    public State respondEcho(Response response) {
+        this.drone.echo(response.getCost(), Orientation.FORWARD);
+
+        EchoResponse echoResponse = (EchoResponse)response;
+        Integer distance = echoResponse.getRange();
+
+        if (distance > 0) {
+            return new EdgeArriverState(this.drone, Stage.FLY);
+        } else {
+            return new StepScannerState(this.drone);
         }
     }
 
