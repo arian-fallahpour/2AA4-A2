@@ -109,10 +109,14 @@ public class Explorer implements IExplorerRaid {
                     double distance = Math.sqrt(dx*dx + dy*dy);
                     
                     report.append("Site ").append(site)
+                          .append(" at position (").append(sitePos.x).append(", ").append(sitePos.y).append(")")
                           .append(" - Nearest creek: ").append(nearestCreek)
+                          .append(" at position (").append(creekPos.x).append(", ").append(creekPos.y).append(")")
                           .append(" (distance: ").append(String.format("%.2f", distance)).append(")\n");
                 } else {
+                    Vector sitePos = tracker.getSitePosition(site);
                     report.append("Site ").append(site)
+                          .append(" at position (").append(sitePos.x).append(", ").append(sitePos.y).append(")")
                           .append(" - No creeks found nearby\n");
                 }
             }
