@@ -12,6 +12,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
+import ca.mcmaster.se2aa4.island.teamXXX.ResourceTracker;
 
 public class StepScannerState implements State {
     private final Logger logger = LogManager.getLogger();
@@ -55,7 +56,11 @@ public class StepScannerState implements State {
                 
         ScanResponse scanResponse = (ScanResponse)response;
         ArrayList<Biome> biomes = scanResponse.getBiomes();
-
+        
+        // Add this code to update the ResourceTracker with each scan
+        ResourceTracker tracker = ResourceTracker.getInstance(drone);
+        tracker.processScanResponse(scanResponse);
+        
         Boolean overOcean = biomes.size() == 1 && biomes.get(0) == Biome.OCEAN;
         if (overOcean) {
             return new StepScannerState(this.drone, Stage.CHECK);
