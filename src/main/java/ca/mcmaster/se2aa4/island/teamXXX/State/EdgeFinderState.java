@@ -58,7 +58,7 @@ public class EdgeFinderState implements State {
     }
 
     private State respondEcho(Response response) {
-        this.drone.echo(response.getCost(), this.echoOrientation);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         EchoResponse.Found found = echoResponse.getFound();
@@ -73,10 +73,5 @@ public class EdgeFinderState implements State {
     private State respondFly(Response response) {
         this.drone.fly(response.getCost());
         return new EdgeFinderState(this.drone, Stage.ECHO);
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

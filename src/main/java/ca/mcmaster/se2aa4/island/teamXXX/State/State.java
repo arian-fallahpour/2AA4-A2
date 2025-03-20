@@ -18,6 +18,4 @@ public interface State {
      * Responds to a response from the game engine and updates application's state
      */
     public State respond(Response response);
-
-    public String getStatus();
 }

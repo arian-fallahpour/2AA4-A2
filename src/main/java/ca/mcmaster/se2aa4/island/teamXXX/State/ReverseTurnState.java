@@ -44,48 +44,38 @@ public class ReverseTurnState implements State {
     }
 
     private State respondTurn1(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
 
         // Check if drone is safe to turn
-        if (!this.drone.isSafeWithin(1)) {
-            return null;
-        }
+        if (!this.drone.isSafeWithin(1)) { return null; }
         
         State exitState1 = new ReverseTurnState(this.drone, this.orientation, Stage.FLY);
         return new SharpTurnState(this.drone, this.orientation, exitState1);
     }
 
     private State respondFly(Response response) {
-        this.drone.fly();
+        this.drone.fly(response.getCost());
 
-        if (this.drone.getPosition().x > this.drone.getMap()[0].length - 1) {
-            return null;
-        }
+        // Check if drone is safe to turn
+        if (!this.drone.isSafeWithin(1)) { return null; }
 
         State exitState2 = new ReverseTurnState(this.drone, this.orientation, Stage.TURN2);
         return new SharpTurnState(this.drone, this.orientation, exitState2);
     }
 
     private State respondTurn2(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
                 
         EchoResponse echoResponse = (EchoResponse)response;
         EchoResponse.Found found = echoResponse.getFound();
         
         // Check if drone is safe to turn
-        if (!this.drone.isSafeWithin(1)) {
-            return null;
-        }
+        if (!this.drone.isSafeWithin(1)) { return null; }
         
         if (found == EchoResponse.Found.OUT_OF_RANGE) {
             return null; // Stop plane
         } else {
             return new EdgeArriverState(this.drone);
         }
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

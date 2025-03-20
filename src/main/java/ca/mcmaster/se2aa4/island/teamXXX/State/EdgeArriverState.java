@@ -45,7 +45,7 @@ public class EdgeArriverState implements State {
     }
 
     public State respondEcho(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         Integer distance = echoResponse.getRange();
@@ -55,10 +55,5 @@ public class EdgeArriverState implements State {
         } else {
             return new StepScannerState(this.drone);
         }
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

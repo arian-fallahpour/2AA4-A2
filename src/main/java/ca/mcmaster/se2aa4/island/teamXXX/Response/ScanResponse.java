@@ -39,7 +39,7 @@ public class ScanResponse implements Response {
     public ArrayList<String> getCreeks() { return this.creeks; }
     public ArrayList<String> getSites() { return this.sites; }
 
-    public void setBiomes() {
+    private void setBiomes() {
         JSONArray biomesArray = this.extras.getJSONArray("biomes");
         this.biomes = new ArrayList<Biome>();
         for (int i = 0; i < biomesArray.length(); i++) {
@@ -47,7 +47,7 @@ public class ScanResponse implements Response {
         }
     }
 
-    public void setCreeks() {
+    private void setCreeks() {
         JSONArray creeksArray = this.extras.getJSONArray("creeks");
         this.creeks = new ArrayList<String>();
         for (int i = 0; i < creeksArray.length(); i++) {
@@ -55,7 +55,7 @@ public class ScanResponse implements Response {
         }
     }
     
-    public void setSites() {
+    private void setSites() {
         JSONArray sitesArray = this.extras.getJSONArray("sites");
         this.sites = new ArrayList<String>();
         for (int i = 0; i < sitesArray.length(); i++) {

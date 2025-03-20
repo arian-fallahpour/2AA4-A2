@@ -3,19 +3,16 @@ package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
-//drone class that handles all drone movement and sensing operations
 public class Drone {
-    private final Logger logger = LogManager.getLogger();
-
     private Heading heading; // Direction as a Heading
     private Vector position; // Position as a Vector
     private Battery battery;
-    private Integer[][] map;
+    private Storage storage;
+    private Map map;
 
     private final Integer step = 1;
 
@@ -23,53 +20,41 @@ public class Drone {
         this.heading = heading;
         this.position = position;
         this.battery = new Battery(charge);
+        this.storage = new Storage();
     }
 
-    /*
-     * Calibrates drone's map
-     */
     public void calibrate(Integer rows, Integer cols) {
-        logger.info("Drone map calibrated with " + rows + " rows and " + cols + " columns");
-        this.map = new Integer[rows][cols];
+        this.map = new Map(rows, cols);
     }
 
-    /*
-     * Moves drones in direction of its heading
-     */
     public void fly(Integer cost) {
         this.battery.drain(cost);
         this.position = this.position.add(this.heading.toVector().multiply(this.step));
     }
+    private void fly() { this.fly(0); }
 
-    public void fly() {
-        this.fly(0);
-    }
-
-    /*
-     * Turns in a non in-place manner, as defined in game engine documentation
-     */
     public void turn(Integer cost, Orientation orientiation) {
         if (orientiation == Orientation.FORWARD) {
             throw new IllegalArgumentException("You cannot turn forwards");
         }
 
-        this.battery.drain(cost);
         this.fly();
         this.heading = orientiation.orient(this.heading);
         this.fly();
+
+        this.battery.drain(cost);
     }
 
-    public void echo(Integer cost, Orientation orientiation) {
+    public void echo(Integer cost) {
         this.battery.drain(cost);
     }
 
     public void scan(Integer cost) {
         this.battery.drain(cost);
     }
-    
-    // Get the drone's current coordinates
-    public Vector getPosition() {
-        return this.position.copy();
+
+    public void stop(Integer cost) {
+        this.battery.drain(cost);
     }
     
     // Gets the drone's current direction as heading
@@ -77,39 +62,19 @@ public class Drone {
         return Heading.valueOf(this.heading.toString());
     }
     
-    // Gets the drone's current direction as vector
-    public Vector getDirection() {
-        return this.heading.toVector();
-    }
-
-    // Gets the drone's battery
-    public Battery getBattery() {
-        return new Battery(this.battery.getCharge());
-    }
-    
-    // Gets the drone's map
-    public Integer[][] getMap() {
-        return this.map;
-    }
-    
-    // Set the drone's position (to be called from Explorer when the engine updates)
-    public void setPosition(Vector newPosition) {
-        this.position = newPosition;
-    }
-    
-    // Set the drone's direction (to be called from Explorer when the engine updates)
-    public void setHeading(Heading newHeading) {
-        this.heading = newHeading;
-    }
-    
-    //get a string representation of the drone's current state
+    // Get a string representation of the drone's current state
     public String getStatus() {
         return "Position: " + this.position.toString() + ", " + "Heading: " + this.heading + ", " + "Battery: " + this.battery.getCharge();
     }
 
+    public Integer getCharge() {
+        return this.battery.getCharge();
+    }
+
+    // Returns true if border is not within the specified range from the drone
     public Boolean isSafeWithin(Integer range) {
-        Integer rows = this.map.length;
-        Integer cols = this.map[0].length;
+        Integer rows = this.map.getRows();
+        Integer cols = this.map.getCols();
 
         if (this.position.x < range) return false;
         if (this.position.x > rows - range) return false;
@@ -117,5 +82,47 @@ public class Drone {
         if (this.position.y > cols - range) return false;
 
         return true;
+    }
+
+    public void saveCreeks(ArrayList<String> creekIds) {
+        for (int i = 0; i < creekIds.size(); i++) { 
+            this.saveCreek(creekIds.get(i));
+        }
+    }
+
+    public void saveCreek(String creekId) {
+        POI poi = new POI(POI.Type.CREEK, creekId, this.position.clone());
+        this.storage.saveCreek(poi);
+    }
+
+    public void saveSite(String siteId) {
+        POI poi = new POI(POI.Type.SITE, siteId, this.position.clone());
+        this.storage.saveSite(poi);
+    }
+
+    public ArrayList<POI> getCreeks() { 
+        return this.storage.getCreeks(); 
+    };
+
+    public POI getSite() { 
+        return this.storage.getSite();
+    };
+
+    public POI getNearestCreek() {
+        ArrayList<POI> creeks = this.storage.getCreeks();
+        POI site = this.getSite();
+
+        Double smallestDistance = null;
+        POI nearestCreek = null;
+        for (int i = 0; i < creeks.size(); i++) {
+            POI creek = creeks.get(i);
+            Double distance = site.getPosition().subtract(creek.getPosition()).magnitude();
+            if (smallestDistance == null || distance < smallestDistance) {
+                smallestDistance = distance;
+                nearestCreek = creek;
+            }
+        }
+
+        return nearestCreek;
     }
 }

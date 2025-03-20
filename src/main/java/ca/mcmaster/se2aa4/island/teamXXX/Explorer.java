@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Drone.POI;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.State.CalibrationState;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
@@ -22,7 +24,6 @@ public class Explorer implements IExplorerRaid {
     @Override
     public void initialize(String s) {
         JSONObject info = new JSONObject(new JSONTokener(new StringReader(s)));
-        logger.info(info.toString());
         
         // Create drone
         Integer charge = info.getInt("budget");
@@ -55,6 +56,16 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
+        ArrayList<POI> creeks = this.drone.getCreeks();
+        
+        logger.info("CREEKS:");
+        for (int i = 0; i < creeks.size(); i++) {
+            logger.info(creeks.get(i).toJSONObject().toString());
+        }
+
+        logger.info("NEAREST CREEK: " + this.drone.getNearestCreek().toJSONObject().toString());
+        logger.info("SITE: " + this.drone.getSite().toJSONObject().toString());
+
         return "No creeks found";
     }
 }

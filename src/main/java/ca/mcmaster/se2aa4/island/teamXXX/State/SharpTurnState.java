@@ -136,9 +136,4 @@ public class SharpTurnState implements State {
         
         return Orientation.RIGHT;
     }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
-    }
 }

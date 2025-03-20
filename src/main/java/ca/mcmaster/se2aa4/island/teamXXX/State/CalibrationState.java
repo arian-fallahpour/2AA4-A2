@@ -48,11 +48,6 @@ public class CalibrationState implements State {
             return this;
         }
 
-        public Builder withMaxCols(Integer maxCols) {
-            this.maxCols = maxCols;
-            return this;
-        }
-
         public CalibrationState build() {
             return new CalibrationState(this);
         }
@@ -67,9 +62,6 @@ public class CalibrationState implements State {
         }
     }
 
-    /*
-     * Updates map dimensions, and calibrates drone map if in final (GET_COLS) stage
-     */
     @Override
     public State respond(Response response) {
         switch (this.stage) {
@@ -80,7 +72,8 @@ public class CalibrationState implements State {
     }
 
     private State respondGetRows(Response response) {
-        this.drone.echo(response.getCost(), colsOrientation);
+        this.drone.echo(response.getCost());
+
         return new CalibrationState.Builder(this.drone)
             .withStage(Stage.GET_COLS)
             .withMaxRows(response.getExtras().getInt("range"))
@@ -88,16 +81,11 @@ public class CalibrationState implements State {
     }
 
     private State respondGetCols(Response response) {
+        this.drone.echo(response.getCost());
+        
         this.maxCols = response.getExtras().getInt("range");
-
-        this.drone.echo(response.getCost(), colsOrientation);
         this.drone.calibrate(this.maxRows, this.maxCols);
         
         return new EdgeFinderState(this.drone);
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

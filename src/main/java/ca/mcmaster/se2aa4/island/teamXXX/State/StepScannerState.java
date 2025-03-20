@@ -2,20 +2,14 @@ package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
-import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
 
 public class StepScannerState implements State {
-    private final Logger logger = LogManager.getLogger();
-
     public enum Stage { SCAN, FLY, CHECK };
 
     private Drone drone;
@@ -54,8 +48,13 @@ public class StepScannerState implements State {
         this.drone.scan(response.getCost());
                 
         ScanResponse scanResponse = (ScanResponse)response;
-        ArrayList<Biome> biomes = scanResponse.getBiomes();
+        ArrayList<String> creeks = scanResponse.getCreeks();
+        ArrayList<String> sites = scanResponse.getSites();
 
+        this.drone.saveCreeks(creeks);
+        if (sites.size() == 1) { this.drone.saveSite(sites.get(0)); }
+        
+        ArrayList<Biome> biomes = scanResponse.getBiomes();
         Boolean overOcean = biomes.size() == 1 && biomes.get(0) == Biome.OCEAN;
         if (overOcean) {
             return new StepScannerState(this.drone, Stage.CHECK);
@@ -70,12 +69,11 @@ public class StepScannerState implements State {
     }
 
     private State respondCheck(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         EchoResponse.Found found = echoResponse.getFound();
         Integer distance = echoResponse.getRange();
-        logger.info("FOUND: " + found);
         
         if (distance == 0) {
             return new StepScannerState(this.drone, Stage.FLY);
@@ -84,10 +82,5 @@ public class StepScannerState implements State {
         } else {
             return new BorderArriverState(this.drone);
         }
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }
