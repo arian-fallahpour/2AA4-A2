@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State;
 
-import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;

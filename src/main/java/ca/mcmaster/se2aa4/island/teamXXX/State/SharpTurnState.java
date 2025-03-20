@@ -16,7 +16,6 @@ public class SharpTurnState implements State {
     private Integer turns;
 
     private final Integer maxTurnsBeforeExit = 2;
-    private final Integer minSafeRange = 1;
 
     public SharpTurnState(Drone drone, Orientation orientation, State exitState) {
         this(
