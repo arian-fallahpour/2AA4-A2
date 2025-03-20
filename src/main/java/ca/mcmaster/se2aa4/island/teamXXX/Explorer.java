@@ -57,14 +57,17 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String deliverFinalReport() {
         ArrayList<POI> creeks = this.drone.getCreeks();
+        POI site = this.drone.getSite();
         
         logger.info("CREEKS:");
         for (int i = 0; i < creeks.size(); i++) {
             logger.info(creeks.get(i).toJSONObject().toString());
         }
 
-        logger.info("NEAREST CREEK: " + this.drone.getNearestCreek().toJSONObject().toString());
-        logger.info("SITE: " + this.drone.getSite().toJSONObject().toString());
+        if (site != null ) {   
+            logger.info("NEAREST CREEK: " + this.drone.getNearestCreek().toJSONObject().toString());
+            logger.info("SITE: " + site.toJSONObject().toString());
+        }
 
         return "No creeks found";
     }
