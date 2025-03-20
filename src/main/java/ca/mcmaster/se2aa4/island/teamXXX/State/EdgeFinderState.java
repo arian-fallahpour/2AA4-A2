@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State;
 
-import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
@@ -58,7 +56,7 @@ public class EdgeFinderState implements State {
     }
 
     private State respondEcho(Response response) {
-        this.drone.echo(response.getCost(), this.echoOrientation);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         EchoResponse.Found found = echoResponse.getFound();
@@ -73,10 +71,5 @@ public class EdgeFinderState implements State {
     private State respondFly(Response response) {
         this.drone.fly(response.getCost());
         return new EdgeFinderState(this.drone, Stage.ECHO);
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

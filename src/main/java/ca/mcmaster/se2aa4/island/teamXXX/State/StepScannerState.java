@@ -2,21 +2,15 @@ package ca.mcmaster.se2aa4.island.teamXXX.State;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
-import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.ResourceTracker;
 
 public class StepScannerState implements State {
-    private final Logger logger = LogManager.getLogger();
-
     public enum Stage { SCAN, FLY, CHECK };
 
     private Drone drone;
@@ -55,6 +49,7 @@ public class StepScannerState implements State {
         this.drone.scan(response.getCost());
                 
         ScanResponse scanResponse = (ScanResponse)response;
+<<<<<<< HEAD
         ArrayList<Biome> biomes = scanResponse.getBiomes();
         
         // Add this code to update the ResourceTracker with each scan
@@ -75,12 +70,11 @@ public class StepScannerState implements State {
     }
 
     private State respondCheck(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         EchoResponse.Found found = echoResponse.getFound();
         Integer distance = echoResponse.getRange();
-        logger.info("FOUND: " + found);
         
         if (distance == 0) {
             return new StepScannerState(this.drone, Stage.FLY);
@@ -89,10 +83,5 @@ public class StepScannerState implements State {
         } else {
             return new BorderArriverState(this.drone);
         }
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

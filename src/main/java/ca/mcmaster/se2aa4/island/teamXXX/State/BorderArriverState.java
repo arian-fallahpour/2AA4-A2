@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
@@ -11,8 +8,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
 public class BorderArriverState implements State{
-    private final Logger logger = LogManager.getLogger();
-
     public enum Stage { ECHO, FLY };
 
     private Drone drone;
@@ -48,7 +43,7 @@ public class BorderArriverState implements State{
     }
 
     private State respondEcho(Response response) {
-        this.drone.echo(response.getCost(), Orientation.FORWARD);
+        this.drone.echo(response.getCost());
 
         EchoResponse echoResponse = (EchoResponse)response;
         Integer distance = echoResponse.getRange();
@@ -67,10 +62,5 @@ public class BorderArriverState implements State{
 
     private Orientation getReverseTurnOrientation() {
         return this.drone.getHeading() == Heading.S ? Orientation.LEFT : Orientation.RIGHT;
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

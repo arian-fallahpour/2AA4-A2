@@ -16,7 +16,6 @@ public class SharpTurnState implements State {
     private Integer turns;
 
     private final Integer maxTurnsBeforeExit = 2;
-    private final Integer minSafeRange = 1;
 
     public SharpTurnState(Drone drone, Orientation orientation, State exitState) {
         this(
@@ -135,10 +134,5 @@ public class SharpTurnState implements State {
         }
         
         return Orientation.RIGHT;
-    }
-
-    @Override 
-    public String getStatus() {
-        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }
