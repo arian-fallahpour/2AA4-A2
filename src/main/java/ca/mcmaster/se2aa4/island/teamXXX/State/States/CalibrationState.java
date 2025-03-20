@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State.States;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
@@ -10,8 +7,6 @@ import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class CalibrationState implements State {
-    private final Logger logger = LogManager.getLogger();
-
     public enum Stage { GET_ROWS, GET_COLS };
     private Drone drone;
     private Stage stage;
@@ -96,5 +91,10 @@ public class CalibrationState implements State {
                     
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    @Override 
+    public String getStatus() {
+        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

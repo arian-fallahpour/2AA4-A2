@@ -17,11 +17,11 @@ public class Drone {
     private Battery battery;
     private Integer[][] map;
 
-    private Integer step = 1;
+    private final Integer step = 1;
 
     public Drone(Integer charge, Heading heading) {
         this.heading = heading;
-        this.position = new Vector(0, 0);
+        this.position = new Vector(1, 1);
         this.battery = new Battery(charge);
     }
 
@@ -67,23 +67,6 @@ public class Drone {
         this.battery.drain(cost);
     }
     
-    /*
-     * Returns true if the plane will be on the first/last tile of the map when moving forward
-     */
-    public Boolean willHitBorderAfterFlying(Integer step) {
-        switch (this.heading) {
-            case N: return this.position.y - step < 1;
-            case E: return this.position.x + step >= map.length;
-            case S: return this.position.y + step >= map[0].length + 1;
-            case W: return this.position.x - step < 0;
-            default: return false;
-        }
-    }
-
-    public Boolean willHitBorderAfterFlying() {
-        return this.willHitBorderAfterFlying(this.step);
-    }
-    
     // Get the drone's current coordinates
     public Vector getPosition() {
         return this.position.copy();
@@ -121,8 +104,18 @@ public class Drone {
     
     //get a string representation of the drone's current state
     public String getStatus() {
-        return "Position: (" + this.position.x + "," + this.position.y + "), " +
-               "Heading: " + this.heading + ", " +
-               "Battery: " + this.battery.getCharge();
+        return "Position: " + this.position.toString() + ", " + "Heading: " + this.heading + ", " + "Battery: " + this.battery.getCharge();
+    }
+
+    public Boolean isSafeWithin(Integer range) {
+        Integer rows = this.map.length;
+        Integer cols = this.map[0].length;
+
+        if (this.position.x < range) return false;
+        if (this.position.x > rows - range) return false;
+        if (this.position.y < range) return false;
+        if (this.position.y > cols - range) return false;
+
+        return true;
     }
 }

@@ -2,16 +2,12 @@ package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
 
 public class ScanResponse implements Response {
-    private final Logger logger = LogManager.getLogger();
-
     private Integer cost;
     private Response.Status status;
     private JSONObject extras;

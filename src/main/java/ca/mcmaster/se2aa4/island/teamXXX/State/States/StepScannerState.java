@@ -17,7 +17,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 public class StepScannerState implements State {
     private final Logger logger = LogManager.getLogger();
 
-    public enum Stage { SCAN, STEP, CHECK };
+    public enum Stage { SCAN, FLY, CHECK };
 
     private Drone drone;
     private Stage stage;
@@ -35,7 +35,7 @@ public class StepScannerState implements State {
     public Action request() {
         switch (this.stage) {
             case SCAN: return new Action(Action.Type.SCAN);
-            case STEP: return new Action(Action.Type.FLY);
+            case FLY: return new Action(Action.Type.FLY);
             case CHECK: return new Action(Action.Type.ECHO).setParam("direction", this.drone.getHeading());
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
@@ -54,10 +54,10 @@ public class StepScannerState implements State {
                 if (overOcean) {
                     return new StepScannerState(this.drone, Stage.CHECK);
                 } else {
-                    return new StepScannerState(this.drone, Stage.STEP);
+                    return new StepScannerState(this.drone, Stage.FLY);
                 }
 
-            case STEP:
+            case FLY:
                 this.drone.fly(response.getCost());
                 return new StepScannerState(this.drone, Stage.SCAN);
 
@@ -65,17 +65,24 @@ public class StepScannerState implements State {
                 this.drone.echo(response.getCost(), Orientation.FORWARD);
 
                 EchoResponse echoResponse = (EchoResponse)response;
+                EchoResponse.Found found = echoResponse.getFound();
+                Integer distance = echoResponse.getRange();
+                logger.info("FOUND: " + found);
                 
-                Boolean foundGround = echoResponse.getFound() == EchoResponse.Found.GROUND;
-                logger.info("FOUND GROUND: " + foundGround);
-                if (foundGround) {
-                    return new EdgeArriverState(this.drone, echoResponse.getRange());
+                if (distance == 0) {
+                    return new StepScannerState(this.drone, Stage.FLY);
+                } else if (found == EchoResponse.Found.GROUND) {
+                    return new EdgeArriverState(this.drone);
                 } else {
-                    // return null;
-                    return new BorderArriverState(this.drone, echoResponse.getRange());
+                    return new BorderArriverState(this.drone);
                 }
 
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    @Override 
+    public String getStatus() {
+        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

@@ -31,19 +31,20 @@ public class DecisionMaker {
     public Action decide() {
         if (this.state != null) {
             this.action = this.state.request();
+            logger.info("STATE: " + this.state.getStatus());
         } else {
             this.action = new Action(Action.Type.STOP);
         }
-
+        
         return this.action;
     }
-
+    
     /*
-     * Updates drone data and determines next state
-     */
+    * Updates drone data and determines next state
+    */
     public void acknowledge(JSONObject jsonResponse) {
         if (this.state == null) return;
-
+        
         Response response = this.getResponse(jsonResponse);
         if (response.getStatus() != Response.Status.OK) return;
         

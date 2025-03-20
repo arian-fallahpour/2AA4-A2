@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State.States;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
@@ -11,9 +8,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class SharpTurnState implements State {
-    private final Logger logger = LogManager.getLogger();
-
-    public enum Stage { STEP, TURN, EXIT };
+    public enum Stage { ENTER, TURN, EXIT };
 
     private Drone drone;
     private Orientation orientation;
@@ -22,13 +17,14 @@ public class SharpTurnState implements State {
     private Integer turns;
 
     private final Integer maxTurnsBeforeExit = 2;
+    private final Integer minSafeRange = 1;
 
     public SharpTurnState(Drone drone, Orientation orientation, State exitState) {
         this(
             new SharpTurnState.Builder(drone)
                 .withOrientation(orientation)
                 .withExitState(exitState)
-                .withStage(Stage.STEP)
+                .withStage(Stage.ENTER)
                 .withTurns(0)
         );
     }
@@ -80,9 +76,9 @@ public class SharpTurnState implements State {
     @Override
     public Action request() {
         switch (this.stage) {
-            case STEP:
-            case EXIT: return new Action(Action.Type.FLY);
+            case ENTER: return new Action(Action.Type.FLY);
             case TURN: return new Action(Action.Type.HEADING).setParam("direction", this.getTurnHeading());
+            case EXIT: return new Action(Action.Type.FLY);
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
     }
@@ -90,8 +86,9 @@ public class SharpTurnState implements State {
     @Override 
     public State respond(Response response) {
         switch (this.stage) {
-            case STEP:
+            case ENTER:
                 this.drone.fly(response.getCost());
+
                 return new SharpTurnState.Builder(drone)
                     .withOrientation(this.orientation)
                     .withExitState(this.exitState)
@@ -133,5 +130,10 @@ public class SharpTurnState implements State {
         }
         
         return Orientation.RIGHT;
+    }
+
+    @Override 
+    public String getStatus() {
+        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }

@@ -9,8 +9,6 @@ import org.json.JSONTokener;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
-import ca.mcmaster.se2aa4.island.teamXXX.Response.BasicResponse;
-import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 import ca.mcmaster.se2aa4.island.teamXXX.State.States.CalibrationState;
 import eu.ace_design.island.bot.IExplorerRaid;
@@ -47,11 +45,12 @@ public class Explorer implements IExplorerRaid {
     @Override
     public void acknowledgeResults(String s) {
         JSONObject jsonResponse = new JSONObject(new JSONTokener(new StringReader(s)));
-
+        
+        
         logger.info("RESPONSE: " + jsonResponse);
-        logger.info(this.drone.getStatus());
-
         this.decisionMaker.acknowledge(jsonResponse);
+        
+        logger.info(this.drone.getStatus());
     }
 
     @Override

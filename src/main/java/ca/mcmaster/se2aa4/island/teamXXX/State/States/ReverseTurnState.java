@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.State.States;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
@@ -11,9 +8,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 public class ReverseTurnState implements State {
-    private final Logger logger = LogManager.getLogger();
-
-    public enum Stage { TURN1, TURN2, EXIT };
+    public enum Stage { TURN1, FLY, TURN2 };
 
     private Drone drone;
     private Stage stage;
@@ -33,8 +28,8 @@ public class ReverseTurnState implements State {
     public Action request() {
         switch (this.stage) {
             case TURN1: return new Action(Action.Type.ECHO).setParam("direction", this.drone.getHeading());
-            case TURN2: return new Action(Action.Type.FLY);
-            case EXIT: return new Action(Action.Type.ECHO).setParam("direction", this.drone.getHeading());
+            case FLY: return new Action(Action.Type.FLY);
+            case TURN2: return new Action(Action.Type.ECHO).setParam("direction", this.drone.getHeading());
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
     }
@@ -44,30 +39,48 @@ public class ReverseTurnState implements State {
         switch (this.stage) {
             case TURN1: 
                 this.drone.echo(response.getCost(), Orientation.FORWARD);
+
+                // Check if drone is safe to turn
+                if (!this.drone.isSafeWithin(1)) {
+                    return null;
+                }
                 
-                State exitState1 = new ReverseTurnState(this.drone, this.orientation, Stage.TURN2);
+                State exitState1 = new ReverseTurnState(this.drone, this.orientation, Stage.FLY);
                 return new SharpTurnState(this.drone, this.orientation, exitState1);
                 
-            case TURN2: 
-                this.drone.fly(response.getCost());
-                
-                State exitState2 = new ReverseTurnState(this.drone, this.orientation, Stage.EXIT);
+            case FLY: 
+                this.drone.fly();
+
+                if (this.drone.getPosition().x > this.drone.getMap()[0].length - 1) {
+                    return null;
+                }
+
+                State exitState2 = new ReverseTurnState(this.drone, this.orientation, Stage.TURN2);
                 return new SharpTurnState(this.drone, this.orientation, exitState2);
                 
-            case EXIT:
+            case TURN2: 
                 this.drone.echo(response.getCost(), Orientation.FORWARD);
-
+                
                 EchoResponse echoResponse = (EchoResponse)response;
-                Integer distance = echoResponse.getRange();
                 EchoResponse.Found found = echoResponse.getFound();
-
-                if (found == EchoResponse.Found.OUT_OF_RANGE) {
+                
+                // Check if drone is safe to turn
+                if (!this.drone.isSafeWithin(1)) {
                     return null;
+                }
+                
+                if (found == EchoResponse.Found.OUT_OF_RANGE) {
+                    return null; // Stop plane
                 } else {
-                    return new EdgeArriverState(this.drone, distance);
+                    return new EdgeArriverState(this.drone);
                 }
 
             default: throw new IllegalStateException("Unexpected stage: " + this.stage.toString());
         }
+    }
+
+    @Override 
+    public String getStatus() {
+        return "State: " + this.getClass().getName() + ", Stage: " + this.stage.toString();
     }
 }
