@@ -3,13 +3,13 @@ package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
 public enum Heading {
-    N, E, S, W, Z; // North, East, South, West, Zero (null)
+    N, E, S, W;
 
     public Heading turn(Orientation orientation) {
         switch (orientation) {
             case Orientation.LEFT: return this.left();
             case Orientation.RIGHT: return this.right();
-            default:  return this;
+            default: return this;
         }
     }
 

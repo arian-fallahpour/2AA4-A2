@@ -7,65 +7,59 @@ import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
 
-public class ScanResponse extends Response {
-    private ArrayList<Biome> biomes = new ArrayList<Biome>();
-    private ArrayList<String> creeks = new ArrayList<String>();
-    private ArrayList<String> sites = new ArrayList<String>();
+public class ScanResponse implements Response {
+    private Integer cost;
+    private Response.Status status;
+    private JSONObject extras;
 
-    public ScanResponse(JSONObject responseObject) {
-        super(responseObject);
+    private ArrayList<Biome> biomes;
+    private ArrayList<String> creeks;
+    private ArrayList<String> sites;
 
-        JSONObject extrasObject = this.getExtrasObject();
-        this.setBiomes(extrasObject.getJSONArray("biomes"));
-        this.setCreeks(extrasObject.getJSONArray("creeks"));
-        this.setSites(extrasObject.getJSONArray("sites"));
+    public ScanResponse(JSONObject jsonResponse) {
+        this.cost = jsonResponse.getInt("cost");
+        this.status = Response.Status.valueOf(jsonResponse.getString("status"));
+        this.extras = jsonResponse.getJSONObject("extras");
+
+        this.setBiomes();
+        this.setCreeks();
+        this.setSites();
     }
 
-    /*
-     * Sets biomes with proper enum type
-     */
-    private void setBiomes(JSONArray biomes) {
-        for (int i = 0; i < biomes.length(); i++) {
-            this.biomes.add(Biome.valueOf(biomes.getString(i)));
+    @Override
+    public Integer getCost() { return this.cost; }
+    
+    @Override
+    public Response.Status getStatus() { return this.status; }
+    
+    @Override
+    public JSONObject getExtras() { return this.extras; }
+
+    public ArrayList<Biome> getBiomes() { return this.biomes; }
+    public ArrayList<String> getCreeks() { return this.creeks; }
+    public ArrayList<String> getSites() { return this.sites; }
+
+    public void setBiomes() {
+        JSONArray biomesArray = this.extras.getJSONArray("biomes");
+        this.biomes = new ArrayList<Biome>();
+        for (int i = 0; i < biomesArray.length(); i++) {
+            this.biomes.add(Biome.valueOf(biomesArray.getString(i)));
         }
     }
 
-    /*
-     * Sets creeks
-     */
-    private void setCreeks(JSONArray creeks) {
-        for (int i = 0; i < creeks.length(); i++) {
-            this.creeks.add(creeks.get(i).toString());
+    public void setCreeks() {
+        JSONArray creeksArray = this.extras.getJSONArray("creeks");
+        this.creeks = new ArrayList<String>();
+        for (int i = 0; i < creeksArray.length(); i++) {
+            this.creeks.add(creeksArray.getString(i));
         }
     }
-
-    /*
-     * Sets sites
-     */
-    private void setSites(JSONArray sites) {
-        for (int i = 0; i < sites.length(); i++) {
-            this.sites.add(sites.get(i).toString());
+    
+    public void setSites() {
+        JSONArray sitesArray = this.extras.getJSONArray("sites");
+        this.sites = new ArrayList<String>();
+        for (int i = 0; i < sitesArray.length(); i++) {
+            this.sites.add(sitesArray.getString(i));
         }
-    }
-
-    /*
-     * returns biomes 
-     */
-    public ArrayList<Biome> getBiomes() {
-        return this.biomes;
-    }
-
-    /*
-     * Returns creeks
-     */
-    public ArrayList<String> getCreeks() {
-        return this.creeks;
-    }
-
-    /*
-     * Returns sites
-     */
-    public ArrayList<String> getSites() {
-        return this.sites;
     }
 }
