@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -76,7 +77,7 @@ public class DeliverFinalReport {
         report.append("\n===== END OF REPORT =====");
         
         finalReport = report.toString();
-        logger.debug("Final report generated");
+        logger.info("Final Report:\n" + finalReport);
     }
     
     

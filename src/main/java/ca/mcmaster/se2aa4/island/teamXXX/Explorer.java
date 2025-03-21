@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -53,6 +54,10 @@ public class Explorer implements IExplorerRaid {
         logger.info("Delivering final report");
         ResourceTracker tracker = ResourceTracker.getInstance(this.drone);
         DeliverFinalReport reportGenerator = new DeliverFinalReport(tracker);
-        return reportGenerator.getFinalReport();
+        String report = reportGenerator.getFinalReport();
+        
+        System.out.println("\n\n" + report + "\n");
+        
+        return report;
     }
 }
