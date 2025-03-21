@@ -1,4 +1,8 @@
 # Assignment A2 - Rescue mission
+# Team Members: 
+- [Arian Fallahpour](https://github.com/arian-fallahpour) 
+- [Adam Dabees](https://github.com/Adam-Dabees) 
+- [Ibrahim Al Omran](https://github.com/Ibrahim-Al-Omran)
 
 ## Product Description
 
