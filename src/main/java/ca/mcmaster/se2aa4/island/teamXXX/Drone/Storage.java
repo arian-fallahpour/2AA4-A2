@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
 import java.util.ArrayList;
 
+// Stores discovered creeks and the current emergency site in the drone's memory
 public class Storage implements Cloneable {
     private ArrayList<POI> creeks;
     private POI site;

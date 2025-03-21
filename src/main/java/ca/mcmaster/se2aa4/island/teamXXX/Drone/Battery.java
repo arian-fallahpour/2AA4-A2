@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
+// Manages the drone's energy capacity and consumption
 public class Battery {
     private Integer charge;
 

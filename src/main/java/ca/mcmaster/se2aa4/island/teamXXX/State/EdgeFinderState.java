@@ -6,6 +6,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Responsible for finding the edge of the island by using echo to detect ground on the right
 public class EdgeFinderState implements State {
     public enum Stage { RIGHT_TURN, LEFT_TURN, ECHO, FLY };
 

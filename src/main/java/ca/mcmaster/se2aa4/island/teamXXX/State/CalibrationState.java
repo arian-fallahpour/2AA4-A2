@@ -5,6 +5,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Initial state that determines the island dimensions through echo commands
 public class CalibrationState implements State {
     public enum Stage { GET_ROWS, GET_COLS };
     private Drone drone;

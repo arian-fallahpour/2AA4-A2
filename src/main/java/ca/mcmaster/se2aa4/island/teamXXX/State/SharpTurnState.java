@@ -6,6 +6,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Handles sharp turns with precise control using a builder pattern for configuration
 public class SharpTurnState implements State {
     public enum Stage { ENTER, TURN, EXIT };
 

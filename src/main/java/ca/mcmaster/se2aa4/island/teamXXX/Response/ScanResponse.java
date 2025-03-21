@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Biome;
 
+// Processes scan results containing biomes, creeks and emergency sites at the current location
 public class ScanResponse implements Response {
     private Integer cost;
     private Response.Status status;

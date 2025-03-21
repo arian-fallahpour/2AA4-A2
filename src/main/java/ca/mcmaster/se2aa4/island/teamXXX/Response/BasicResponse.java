@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
 import org.json.JSONObject;
 
+// Default response implementation for standard game engine responses
 public class BasicResponse implements Response {
     private Integer cost;
     private Response.Status status;

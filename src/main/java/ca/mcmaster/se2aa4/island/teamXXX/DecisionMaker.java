@@ -11,9 +11,8 @@ import ca.mcmaster.se2aa4.island.teamXXX.State.LandingState;
 import ca.mcmaster.se2aa4.island.teamXXX.State.State;
 
 
-/*
- * This class makes decision based on the data in the drone
- */
+
+ // This class makes decision based on the data in the drone
 public class DecisionMaker {
     private Drone drone;
     private State state;
@@ -26,17 +25,12 @@ public class DecisionMaker {
         this.state = initialState;
     }
 
-    /*
-     * Determines the action to do at current state
-     */
     public Action decide() {
 
-        // Prevent drone from running out of battery
         if (this.drone.getCharge() < this.minBatteryBeforeAbort) {
             this.state = new LandingState(this.drone);
         }
         
-        // Determine 
         if (this.state != null) {
             this.action = this.state.request();
         } else {
@@ -46,9 +40,6 @@ public class DecisionMaker {
         return this.action;
     }
     
-    /*
-    * Updates drone data and determines next state
-    */
     public void acknowledge(JSONObject jsonResponse) {
         if (this.state == null) return;
         

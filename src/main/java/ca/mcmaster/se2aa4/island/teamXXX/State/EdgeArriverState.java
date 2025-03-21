@@ -5,6 +5,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Positions the drone at the island's edge after it has been located by the EdgeFinderState
 public class EdgeArriverState implements State {
     public enum Stage { FLY, ECHO }
 

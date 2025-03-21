@@ -6,10 +6,10 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Heading;
 import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
-
+// Main drone class that handles movement, scanning, and resource tracking
 public class Drone {
-    private Heading heading; // Direction as a Heading
-    private Vector position; // Position as a Vector
+    private Heading heading; // Current direction
+    private Vector position; // Current coordinates
     private Battery battery;
     private Storage storage;
     private Map map;
@@ -31,8 +31,10 @@ public class Drone {
         this.battery.drain(cost);
         this.position = this.position.add(this.heading.toVector().multiply(this.step));
     }
+    
     private void fly() { this.fly(0); }
 
+    // Changes the drone's direction with a forward-left-forward movement pattern
     public void turn(Integer cost, Orientation orientiation) {
         if (orientiation == Orientation.FORWARD) {
             throw new IllegalArgumentException("You cannot turn forwards");
@@ -57,17 +59,14 @@ public class Drone {
         this.battery.drain(cost);
     }
 
-    // Get the drone's current coordinates
     public Vector getPosition() {
         return this.position.clone();
     }
     
-    // Gets the drone's current direction as heading
     public Heading getHeading() {
         return Heading.valueOf(this.heading.toString());
     }
     
-    // Get a string representation of the drone's current state
     public String getStatus() {
         return "Position: " + this.position.toString() + ", " + "Heading: " + this.heading + ", " + "Battery: " + this.battery.getCharge();
     }
@@ -76,7 +75,7 @@ public class Drone {
         return this.battery.getCharge();
     }
 
-    // Returns true if border is not within the specified range from the drone
+    // Checks if the drone is a safe distance from map boundaries
     public Boolean isSafeWithin(Integer range) {
         Integer rows = this.map.getRows();
         Integer cols = this.map.getCols();

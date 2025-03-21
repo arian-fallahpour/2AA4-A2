@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.island.teamXXX.Response;
 
 import org.json.JSONObject;
 
+// Handles echo responses that provide information about distances to island features
 public class EchoResponse implements Response {
     public enum Found { OUT_OF_RANGE, GROUND };
 

@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
+// Represents the island map dimensions used for calibration and navigation
 public class Map implements Cloneable {
     private Integer rows;
     private Integer cols;

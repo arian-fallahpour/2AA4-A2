@@ -2,9 +2,11 @@ package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
+// Represents the four cardinal directions for drone navigation
 public enum Heading {
     N, E, S, W;
 
+    // Turns the heading based on the provided orientation
     public Heading turn(Orientation orientation) {
         switch (orientation) {
             case Orientation.LEFT: return this.left();
@@ -13,6 +15,7 @@ public enum Heading {
         }
     }
 
+    // Returns the heading after a 90-degree clockwise turn
     public Heading right() {
         switch (this) {
             case N: return E; 
@@ -23,6 +26,7 @@ public enum Heading {
         }
     }
 
+    // Returns the heading after a 90-degree counterclockwise turn
     public Heading left() {
         switch (this) {
             case N: return W; 
@@ -33,6 +37,7 @@ public enum Heading {
         }
     }
 
+    // Returns the opposite direction (180-degree turn)
     public Heading opposite() {
         switch (this) {
             case N: return S;
@@ -43,6 +48,7 @@ public enum Heading {
         }
     }
 
+    // Converts the heading to a unit vector for movement calculations
     public Vector toVector() {
         switch (this) {
             case N: return new Vector(0, -1);

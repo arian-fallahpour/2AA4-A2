@@ -4,6 +4,7 @@ import static eu.ace_design.island.runner.Runner.run;
 
 import java.io.File;
 
+// Entry point for launching island exploration missions with configurable parameters
 public class Runner {
 
     public static void main(String[] args) {

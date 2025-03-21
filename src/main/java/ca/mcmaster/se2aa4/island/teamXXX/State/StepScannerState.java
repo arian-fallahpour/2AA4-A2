@@ -10,6 +10,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.ResourceTracker;
 
+// Implements a step-by-step scanning approach where the drone scans, moves, and checks surroundings
 public class StepScannerState implements State {
     public enum Stage { SCAN, FLY, CHECK };
 
@@ -51,7 +52,6 @@ public class StepScannerState implements State {
         ScanResponse scanResponse = (ScanResponse)response;
         ArrayList<Biome> biomes = scanResponse.getBiomes();
         
-        // Add this code to update the ResourceTracker with each scan
         ResourceTracker tracker = ResourceTracker.getInstance(drone);
         tracker.processScanResponse(scanResponse);
         

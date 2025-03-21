@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
+// Represents a 2D point or direction vector used for drone navigation
 public class Vector {
     public Integer x;
     public Integer y;

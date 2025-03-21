@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Enums;
 
+// Represents the possible turning directions for the drone
 public enum Orientation {
     LEFT, RIGHT, FORWARD;
 

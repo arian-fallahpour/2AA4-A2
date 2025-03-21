@@ -4,6 +4,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Action;
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Final state that safely ends the mission by stopping the drone
 public class LandingState implements State {
     private Drone drone;
 

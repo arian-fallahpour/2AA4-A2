@@ -6,6 +6,7 @@ import ca.mcmaster.se2aa4.island.teamXXX.Enums.Orientation;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.EchoResponse;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.Response;
 
+// Performs a three-step turn maneuver to reverse the drone's direction when needed
 public class ReverseTurnState implements State {
     public enum Stage { TURN1, FLY, TURN2 };
 
