@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.island.teamXXX;
 
 import java.io.StringReader;
-
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -54,6 +54,8 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
-        return "No creeks found";
+        ResourceTracker tracker = ResourceTracker.getInstance(this.drone);
+        DeliverFinalReport reportGenerator = new DeliverFinalReport(tracker);
+        return reportGenerator.getFinalReport();
     }
 }
