@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.island.teamXXX.Drone;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import ca.mcmaster.se2aa4.island.teamXXX.Vector;
 
 public class POI {
@@ -21,15 +18,4 @@ public class POI {
     public Type getType() { return this.type; }
     public String getId() { return this.id; }
     public Vector getPosition() { return this.position; }
-
-    public JSONObject toJSONObject() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type", this.type.toString());
-        jsonObject.put("id", this.id);
-
-        JSONArray jsonPosition = new JSONArray().put(this.position.x).put(this.position.y);
-        jsonObject.put("position", jsonPosition);
-        
-        return jsonObject;
-    }
 }

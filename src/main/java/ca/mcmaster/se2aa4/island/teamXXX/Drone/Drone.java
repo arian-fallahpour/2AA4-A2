@@ -104,30 +104,4 @@ public class Drone {
         POI poi = new POI(POI.Type.SITE, siteId, this.position.clone());
         this.storage.saveSite(poi);
     }
-
-    public ArrayList<POI> getCreeks() { 
-        return this.storage.getCreeks(); 
-    };
-
-    public POI getSite() { 
-        return this.storage.getSite();
-    };
-
-    public POI getNearestCreek() {
-        ArrayList<POI> creeks = this.storage.getCreeks();
-        POI site = this.getSite();
-
-        Double smallestDistance = null;
-        POI nearestCreek = null;
-        for (int i = 0; i < creeks.size(); i++) {
-            POI creek = creeks.get(i);
-            Double distance = site.getPosition().subtract(creek.getPosition()).magnitude();
-            if (smallestDistance == null || distance < smallestDistance) {
-                smallestDistance = distance;
-                nearestCreek = creek;
-            }
-        }
-
-        return nearestCreek;
-    }
 }

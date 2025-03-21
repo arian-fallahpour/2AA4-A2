@@ -25,10 +25,12 @@ public class Vector {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
 
+    @Override
     public Vector clone() {
         return new Vector(this.x, this.y);
     }
 
+    @Override
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }
