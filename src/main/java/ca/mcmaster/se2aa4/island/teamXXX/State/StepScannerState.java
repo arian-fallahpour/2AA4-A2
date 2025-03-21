@@ -49,7 +49,6 @@ public class StepScannerState implements State {
         this.drone.scan(response.getCost());
                 
         ScanResponse scanResponse = (ScanResponse)response;
-<<<<<<< HEAD
         ArrayList<Biome> biomes = scanResponse.getBiomes();
         
         // Add this code to update the ResourceTracker with each scan

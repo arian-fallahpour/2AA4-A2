@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ca.mcmaster.se2aa4.island.teamXXX.Drone.Drone;
+import ca.mcmaster.se2aa4.island.teamXXX.Drone.POI;
 import ca.mcmaster.se2aa4.island.teamXXX.Response.ScanResponse;
 
 /**

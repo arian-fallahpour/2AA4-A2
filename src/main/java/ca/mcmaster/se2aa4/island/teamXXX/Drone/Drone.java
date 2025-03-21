@@ -56,6 +56,11 @@ public class Drone {
     public void stop(Integer cost) {
         this.battery.drain(cost);
     }
+
+    // Get the drone's current coordinates
+    public Vector getPosition() {
+        return this.position.clone();
+    }
     
     // Gets the drone's current direction as heading
     public Heading getHeading() {
